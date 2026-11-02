@@ -1,0 +1,43 @@
+name: 7/24 Veteriner Besi ve Ruminant Bülteni
+
+on:
+  schedule:
+    # UTC Saatleri (Türkiye Saati = UTC+3)
+    # 04:00 UTC -> 07:00 Türkiye (Günün İlk Sabah Bülteni)
+    # 09:00 UTC -> 12:00 Türkiye (Öğle Arası Gündemi)
+    # 14:00 UTC -> 17:00 Türkiye (Akşam Üzeri Pazar/Karantina Bülteni)
+    # 18:00 UTC -> 21:00 Türkiye (Gece Özeti & Bilimsel Yayınlar)
+    - cron: '0 4,9,14,18 * * *'
+  workflow_dispatch: # GitHub web sitesinden "Run workflow" butonuyla anında bülten çekme imkanı
+
+jobs:
+  run-digest:
+    name: Haberleri Tara ve Telegram'a İlet
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Depoyu Klonla (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Bağımlılıkları Yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Bülteni Çalıştır ve Telegram'a İlet
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          CHECK_INTERVAL_MINUTES: "20"
+          MAX_ITEMS_PER_CHECK: "10"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          python main.py --once
