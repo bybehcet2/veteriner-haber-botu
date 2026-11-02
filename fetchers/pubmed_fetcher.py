@@ -15,12 +15,14 @@ logger = logging.getLogger("vet_bot.pubmed")
 PUBMED_SEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
 PUBMED_SUMMARY_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
 
-# Sadece Sığır, Koyun, Keçi, Ruminant ve Besi Odaklı Arama Terimleri
+# Angus Sığırı (Besi Boğası, Düve) ve Buzağı Odaklı Arama Terimleri (Mastitis elendi)
 SEARCH_QUERIES = [
-    "beef cattle feedlot nutrition growth",
-    "bovine respiratory disease cattle treatment",
-    "cattle sheep goat foot and mouth disease vaccine",
-    "ruminant mastitis OR acidosis feedlot"
+    "Angus cattle beef feedlot performance carcass growth",
+    "bovine respiratory disease calves BRD treatment vaccine",
+    "beef calf diarrhea scour colostrum health immunology",
+    "beef cattle feedlot acidosis rumen health nutrition",
+    "Angus heifer reproductive performance calving growth",
+    "bovine viral diarrhea BVD calf health feedlot"
 ]
 
 

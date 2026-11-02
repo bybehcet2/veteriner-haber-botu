@@ -127,11 +127,12 @@ ADANA_KEYWORDS = [
     r"\byumurtalık\b"
 ]
 
-# 2. HEDEF HAYVANLAR VE KONULAR (Sığır, Koyun, Keçi, Besi, Karkas, Ruminant)
+# 2. HEDEF HAYVANLAR VE KONULAR (Angus, Besi, Sığır, Koyun, Keçi, Buzağı Sağlığı, Karkas)
 TARGET_PATTERNS = [
+    r"\bangus\b", r"\bblack angus\b", r"\bred angus\b",
     r"\bsığır\b", r"\bbüyükbaş\b", r"\bdana\b", r"\btosun\b", r"\bdüve\b", r"\binek\b", r"\bbuzağı\b",
     r"\bbovine\b", r"\bcattle\b", r"\bcalves\b", r"\bcalf\b", r"\bbeef\b", r"\bfeedlot\b", r"\bruminant\b",
-    r"\bheifer\b", r"\bsteer\b", r"\bbull\b", r"\bcow\b", r"\bdairy cow\b",
+    r"\bheifer\b", r"\bsteer\b", r"\bbull\b", r"\bcow\b",
     r"\bkoyun\b", r"\bküçükbaş\b", r"\bkuzu\b", r"\bkoç\b", r"\bkoyunculuk\b",
     r"\bovine\b", r"\bsheep\b", r"\blamb\b",
     r"\bkeçi\b", r"\boğlak\b", r"\bteke\b", r"\bcaprine\b", r"\bgoat\b",
@@ -141,9 +142,10 @@ TARGET_PATTERNS = [
     r"\bkesimhane\b", r"\bet fiyat\b", r"\bkarkas et\b",
     r"\bşap\b", r"\bsat-2\b", r"\bppr\b", r"\bmavi dil\b", r"\bbluetongue\b",
     r"\bşarbon\b", r"\banthrax\b", r"\bbrucell\b", r"\bil tarım\b", r"\bilçe tarım\b",
-    r"\blumpy skin\b", r"\bnodüler ekzantem\b", r"\bmastitis\b", r"\bketozis\b",
+    r"\blumpy skin\b", r"\bnodüler ekzantem\b", r"\bketozis\b",
     r"\brumen\b", r"\bruminal\b", r"\btüberküloz\b", r"\bçiçek hastalığı\b",
-    r"\benterotoksemi\b", r"\bçelerme\b", r"\bagalaksi\b", r"\bbvd\b", r"\bibr\b"
+    r"\benterotoksemi\b", r"\bçelerme\b", r"\bagalaksi\b", r"\bbvd\b", r"\bibr\b",
+    r"\bkolostrum\b", r"\bcolostrum\b", r"\bbrd\b", r"\basidoz\b", r"\bacidosis\b"
 ]
 
 # 3. DIŞLANAN HAYVANLAR (Pet, Kanatlı, Domuz)
@@ -167,7 +169,8 @@ NOISE_PATTERNS = [
     r"ziyaret\s+etti", r"ziyarette\s+bulundu", r"makamında\s+ağırladı", r"nezaket\s+ziyareti",
     r"plaket\s+takdim", r"iftar\s+programı", r"bayramlaşma", r"kurban\s+bayramınız\s+kutlu",
     r"genel\s+kurul\s+toplantısı", r"divan\s+kurulu", r"oda\s+başkanı\s+seçil",
-    r"\biş ilanı\b", r"\btakım arkadaşı arıyoruz\b", r"\bpersonel alımı\b", r"\beleman aranıyor\b"
+    r"\biş ilanı\b", r"\btakım arkadaşı arıyoruz\b", r"\bpersonel alımı\b", r"\beleman aranıyor\b",
+    r"\bmastit\b", r"\bmastitis\b", r"\bsütçü inek\b", r"\bdairy cow\b", r"\bdairy cattle\b"
 ]
 
 
