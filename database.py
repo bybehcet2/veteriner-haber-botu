@@ -84,11 +84,8 @@ def is_similar_topic(tokens1: Set[str], tokens2: Set[str], threshold: float = 0.
 
 def is_topic_already_saved(new_title: str, lookback_days: int = 7) -> bool:
     """Veritabanında son 7 gün içinde aynı konudan bahsedilip bahsedilmediğini kontrol eder."""
-    new_tokens = clean_tokens(new_title)
-    if not new_tokens:
-        return False
-
-    # 1. UKON Tarih Kontrolü
+    # 1. UKON Resmi Bülteni: SADECE yayın tarihiyle (dd.mm.yyyy) tekilleştirilir.
+    # Haftalık bülten başlıkları kelime olarak birbirine benzediği için anlamsal örtüşmeye ASLA girmemelidir!
     if "ukon" in new_title.lower():
         date_m = re.search(r'(\d{2}\.\d{2}\.\d{4})', new_title)
         if date_m:
@@ -100,16 +97,23 @@ def is_topic_already_saved(new_title: str, lookback_days: int = 7) -> bool:
                     resp = requests.get(url, headers=_supabase_headers(), params=params, timeout=10)
                     if resp.status_code == 200 and len(resp.json()) > 0:
                         return True
+                    return False  # Bu tarih veritabanında yoksa KESİNLİKLE YENİ bültendir, doğrudan kabul et!
                 except Exception as e:
                     logger.warning(f"Supabase UKON kontrolü hatası: {e}")
+                    return False
             else:
                 with get_db_connection() as conn:
                     cursor = conn.cursor()
                     cursor.execute("SELECT 1 FROM news_items WHERE title LIKE ? LIMIT 1", (f"%{dt_str}%",))
                     if cursor.fetchone() is not None:
                         return True
+                    return False
 
-    # 2. Son 7 günün başlıklarıyla anlamsal örtüşme kontrolü
+    new_tokens = clean_tokens(new_title)
+    if not new_tokens:
+        return False
+
+    # 2. Son 7 günün başlıklarıyla anlamsal örtüşme kontrolü (UKON başlıkları bu kıyasa sokulmaz)
     if USE_SUPABASE:
         try:
             cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).isoformat() + "Z"
@@ -119,6 +123,8 @@ def is_topic_already_saved(new_title: str, lookback_days: int = 7) -> bool:
             if resp.status_code == 200:
                 for row in resp.json():
                     existing_title = row.get("title", "")
+                    if "ukon" in existing_title.lower():
+                        continue
                     if is_similar_topic(new_tokens, clean_tokens(existing_title)):
                         return True
         except Exception as e:
@@ -131,6 +137,8 @@ def is_topic_already_saved(new_title: str, lookback_days: int = 7) -> bool:
             rows = cursor.fetchall()
             for row in rows:
                 existing_title = row[0]
+                if "ukon" in existing_title.lower():
+                    continue
                 if is_similar_topic(new_tokens, clean_tokens(existing_title)):
                     return True
 
